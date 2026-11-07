@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskforge"
+version = "0.1.0"
+description = "A minimal, framework-free multi-agent orchestration engine: planner -> task DAG -> parallel workers -> critic, with budgets, checkpoints and traces."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Lijo Ferdinand", email = "lijoferdinand@gmail.com" }]
+keywords = ["llm", "agents", "multi-agent", "orchestration", "dag", "asyncio", "tool-calling", "anthropic"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Framework :: AsyncIO",
+]
+dependencies = []   # standard library only, on purpose
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.40"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+taskforge = "taskforge.cli:main"
+
+[project.urls]
+Repository = "https://github.com/lijo123ferdinand/taskforge"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
