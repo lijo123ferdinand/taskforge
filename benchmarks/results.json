@@ -1,0 +1,76 @@
+{
+  "args": {
+    "seeds": "20",
+    "latency": "0.05",
+    "repeats": "3",
+    "fault_rate": "0.2",
+    "subtle": "0.25",
+    "json": "benchmarks/results.json"
+  },
+  "python": "3.14.6",
+  "scheduling": [
+    {
+      "dag": "docs_report",
+      "tasks": 8,
+      "levels": 3,
+      "llm_calls": 24,
+      "seconds": {
+        "1": 1.287,
+        "2": 0.8,
+        "4": 0.637,
+        "8": 0.482
+      },
+      "speedup_4": 2.02
+    },
+    {
+      "dag": "csv_stats",
+      "tasks": 4,
+      "levels": 3,
+      "llm_calls": 12,
+      "seconds": {
+        "1": 0.917,
+        "2": 0.725,
+        "4": 0.749,
+        "8": 0.712
+      },
+      "speedup_4": 1.23
+    },
+    {
+      "dag": "calc",
+      "tasks": 6,
+      "levels": 2,
+      "llm_calls": 12,
+      "seconds": {
+        "1": 0.649,
+        "2": 0.444,
+        "4": 0.327,
+        "8": 0.218
+      },
+      "speedup_4": 1.99
+    }
+  ],
+  "critic": {
+    "no_critic": {
+      "success_rate": 0.39,
+      "runs": 100,
+      "avg_llm_calls": 11.1,
+      "avg_tokens": 4637,
+      "per_goal": {
+        "docs_report": 0.2,
+        "csv_stats": 0.5,
+        "calc": 0.417
+      }
+    },
+    "critic": {
+      "success_rate": 0.82,
+      "runs": 100,
+      "avg_llm_calls": 15.0,
+      "avg_tokens": 5836,
+      "per_goal": {
+        "docs_report": 0.75,
+        "csv_stats": 0.9,
+        "calc": 0.817
+      }
+    }
+  }
+}

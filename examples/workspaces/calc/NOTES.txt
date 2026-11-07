@@ -1,0 +1,1 @@
+Scratch workspace for arithmetic goals; no input files are needed.
