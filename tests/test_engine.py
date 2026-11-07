@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 
 import pytest
 from conftest import CALC_GOAL, CSV_GOAL, DOCS_GOAL
@@ -70,13 +69,12 @@ def test_independent_tasks_run_concurrently_and_bounded(docs_ws):
 def test_parallel_is_faster_than_sequential(docs_ws, tmp_path):
     import shutil
     other = shutil.copytree(docs_ws, tmp_path / "seq")
-    t0 = time.monotonic()
-    run(MockProvider(latency=0.03), docs_ws, DOCS_GOAL, max_concurrency=6)
-    parallel = time.monotonic() - t0
-    t0 = time.monotonic()
-    run(MockProvider(latency=0.03), other, DOCS_GOAL, max_concurrency=1)
-    sequential = time.monotonic() - t0
-    assert parallel < sequential * 0.7
+    # 100 ms simulated latency makes model time dominate scheduler noise on slow CI runners:
+    # sequential is >= 24 calls * 0.1 s, the critical path is ~9 calls.
+    parallel, _ = run(MockProvider(latency=0.1), docs_ws, DOCS_GOAL, max_concurrency=6)
+    sequential, _ = run(MockProvider(latency=0.1), other, DOCS_GOAL, max_concurrency=1)
+    assert sequential.elapsed_seconds >= 2.4
+    assert parallel.elapsed_seconds < sequential.elapsed_seconds * 0.6
 
 
 def test_critic_rejects_and_worker_revises(docs_ws):
